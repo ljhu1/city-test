@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>测一测，你适合定居的城市</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2316181C'/%3E%3Ccircle cx='16' cy='16' r='8' fill='none' stroke='%23E0A800' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23E0A800'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
+<style>
+  :root{
+    --ink:#16181C;
+    --ink-soft:#3A3C40;
+    --muted:#7E7B70;
+    --paper:#EFEDE4;
+    --card:#FFFDF7;
+    --line:#D8D3C6;
+    --line-soft:#E6E1D3;
+    --sand:#F5F2E8;
+    --font-display:'ZCOOL KuaiLe','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+    --font-body:'Noto Sans SC','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  [data-custom-element="doubao-watermark"]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:var(--font-body);
+    color:var(--ink);
+    background-color:#D5D0BE;
+    background-image:
+      radial-gradient(80% 50% at 50% -8%, rgba(255,253,247,.85), rgba(255,253,247,0) 70%),
+      radial-gradient(55% 42% at -2% 106%, rgba(31,142,138,.26), transparent 68%),
+      radial-gradient(55% 42% at 102% -4%, rgba(196,50,60,.22), transparent 68%),
+      repeating-linear-gradient(0deg, rgba(22,24,28,.09) 0 1px, transparent 1px 32px),
+      repeating-linear-gradient(90deg, rgba(22,24,28,.09) 0 1px, transparent 1px 32px);
+    display:flex;
+    justify-content:center;
+    min-height:100vh;
+  }
+  .app{
+    width:100%;
+    max-width:480px;
+    min-height:100vh;
+    padding:30px 22px calc(26px + env(safe-area-inset-bottom));
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    isolation:isolate;
+    background-color:#FAF7EE;
+    background-image:
+      /* 中央纸面纱：让文字区安静，纹理收向四周 */
+      radial-gradient(112% 80% at 50% 34%, rgba(250,247,238,.97) 0%, rgba(250,247,238,.88) 30%, rgba(250,247,238,.54) 52%, rgba(250,247,238,.18) 70%, rgba(250,247,238,0) 86%),
+      /* 城市线色柔光 */
+      radial-gradient(74% 46% at 0% -8%, rgba(196,50,60,.32), rgba(196,50,60,0) 64%),
+      radial-gradient(68% 44% at 104% 0%, rgba(42,78,143,.32), rgba(42,78,143,0) 64%),
+      radial-gradient(74% 48% at -8% 106%, rgba(31,142,138,.32), rgba(31,142,138,0) 66%),
+      radial-gradient(72% 46% at 106% 104%, rgba(224,168,0,.36), rgba(224,168,0,0) 66%),
+      radial-gradient(54% 32% at 92% 34%, rgba(122,90,166,.22), rgba(122,90,166,0) 72%),
+      /* 地图纹理：线网 / 等高线 / 网点 */
+      url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%22360%22%20height=%22360%22%20viewBox=%220%200%20360%20360%22%3E%3Cg%20fill=%22none%22%20stroke=%22%2323262B%22%20stroke-width=%221.2%22%20stroke-opacity=%220.20%22%3E%3Cpath%20d=%22M-20%20268%20L120%20268%20L206%20180%20L380%20180%22/%3E%3Cpath%20d=%22M52%20-10%20L52%20128%20L176%20214%20L176%20380%22/%3E%3Cpath%20d=%22M-10%2066%20L96%2066%20L158%20128%20L286%20128%20L356%2062%22/%3E%3Cpath%20d=%22M268%20380%20L268%20222%20L162%20116%20L-10%20116%22/%3E%3Cpath%20d=%22M-10%20318%20L86%20318%20L158%20266%22/%3E%3Cpath%20d=%22M120%20-10%20L120%2046%20L206%2046%22/%3E%3C/g%3E%3Cg%20fill=%22%2323262B%22%20fill-opacity=%220.30%22%3E%3Ccircle%20cx=%22120%22%20cy=%22268%22%20r=%223.2%22/%3E%3Ccircle%20cx=%22206%22%20cy=%22180%22%20r=%223.2%22/%3E%3Ccircle%20cx=%2252%22%20cy=%22128%22%20r=%223.2%22/%3E%3Ccircle%20cx=%22176%22%20cy=%22214%22%20r=%223.2%22/%3E%3Ccircle%20cx=%2296%22%20cy=%2266%22%20r=%223.2%22/%3E%3Ccircle%20cx=%22158%22%20cy=%22128%22%20r=%223.2%22/%3E%3Ccircle%20cx=%22268%22%20cy=%22222%22%20r=%223.2%22/%3E%3Ccircle%20cx=%22162%22%20cy=%22116%22%20r=%223.2%22/%3E%3Ccircle%20cx=%2286%22%20cy=%22318%22%20r=%223.2%22/%3E%3C/g%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%22460%22%20height=%22460%22%20viewBox=%220%200%20460%20460%22%3E%3Cg%20fill=%22none%22%20stroke=%22%2323262B%22%20stroke-opacity=%220.13%22%20stroke-width=%221%22%3E%3Cpath%20d=%22M10%20410%20C%2096%20320,%20140%20278,%20240%20246%20S%20356%20168,%20452%2058%22/%3E%3Cpath%20d=%22M10%20444%20C%20108%20352,%20162%20310,%20262%20278%20S%20372%20206,%20462%20100%22/%3E%3Cpath%20d=%22M10%20378%20C%2086%20288,%20128%20246,%20228%20214%20S%20342%20136,%20438%2024%22/%3E%3Cpath%20d=%22M0%2070%20C%2076%20132,%20132%20164,%20208%20196%20S%20330%20268,%20462%20356%22/%3E%3Cpath%20d=%22M10%20104%20C%2086%20162,%20144%20194,%20220%20226%20S%20340%20300,%20462%20388%22/%3E%3Cpath%20d=%22M0%20140%20C%2078%20196,%20140%20226,%20216%20258%20S%20336%20336,%20460%20420%22/%3E%3C/g%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%2216%22%20height=%2216%22%20viewBox=%220%200%2016%2016%22%3E%3Ccircle%20cx=%224%22%20cy=%224%22%20r=%221%22%20fill=%22%2323262B%22%20fill-opacity=%220.13%22/%3E%3Ccircle%20cx=%2212%22%20cy=%2212%22%20r=%221%22%20fill=%22%2323262B%22%20fill-opacity=%220.13%22/%3E%3C/svg%3E");
+    background-repeat:no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,repeat,repeat,repeat;
+    background-size:auto,auto,auto,auto,auto,auto,360px 360px,460px 460px,16px 16px;
+    background-blend-mode:normal,normal,normal,normal,normal,normal,multiply,multiply,normal;
+  }
+  /* 纸纹颗粒 + 四角暗角 */
+  .app::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%22160%22%20height=%22160%22%3E%3Cfilter%20id=%22n%22%3E%3CfeTurbulence%20type=%22fractalNoise%22%20baseFrequency=%220.8%22%20numOctaves=%223%22%20stitchTiles=%22stitch%22/%3E%3CfeColorMatrix%20type=%22saturate%22%20values=%220%22/%3E%3C/filter%3E%3Crect%20width=%22160%22%20height=%22160%22%20filter=%22url(%23n)%22%20opacity=%220.5%22/%3E%3C/svg%3E"),
+      radial-gradient(130% 100% at 50% 46%, rgba(22,24,28,0) 48%, rgba(22,24,28,.13) 100%);
+    background-size:160px 160px,100% 100%;
+    background-repeat:repeat,no-repeat;
+    opacity:.45;
+    mix-blend-mode:multiply;
+  }
+  /* 左边缘的多线路色条 */
+  .app::after{
+    content:'';
+    position:absolute;
+    left:0;top:0;bottom:0;width:5px;
+    z-index:0;
+    pointer-events:none;
+    opacity:.85;
+    background:linear-gradient(180deg,
+      #C4323C 0 14%,#2A4E8F 14% 28%,#1F8E8A 28% 42%,#DE5A26 42% 56%,
+      #4C8C2B 56% 70%,#7A5AA6 70% 84%,#E0A800 84% 100%);
+    box-shadow:inset 0 0 0 1px rgba(22,24,28,.10);
+  }
+  @media(min-width:640px){
+    body{align-items:center;padding:36px 0}
+    .app{min-height:760px;padding:40px 38px;box-shadow:0 24px 48px -28px rgba(22,24,28,.55)}
+  }
+  .view{display:none;flex-direction:column;flex:1;min-height:0;position:relative;z-index:1}
+  .view.active{display:flex}
+
+  /* ===== 视图：首页 ===== */
+  .intro-top{padding-top:6px}
+  .intro-title{
+    font-family:var(--font-display);
+    font-weight:400;
+    font-size:clamp(30px,8.6vw,38px);
+    line-height:1.3;
+    letter-spacing:.5px;
+    margin:0;
+  }
+  @media(min-width:640px){.intro-title{font-size:38px}}
+  .intro-sub{
+    margin:16px 0 0;
+    font-size:15px;
+    line-height:1.75;
+    color:var(--ink-soft);
+    font-weight:400;
+    max-width:20em;
+  }
+  .intro-rule{height:1px;background:var(--ink);margin:24px 0 0;opacity:.9}
+  .tags{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column}
+  .route-art{flex:1;display:flex;align-items:center;justify-content:center;padding:10px 0;min-height:110px}
+  .route-art svg{width:100%;height:auto;max-height:140px;opacity:.92}
+  .tags li{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:15px;
+    line-height:1.6;
+    padding:13px 0 12px;
+    border-bottom:1px solid var(--line-soft);
+    color:var(--ink-soft);
+    font-weight:500;
+  }
+  .tags li:first-child{border-top:1px solid var(--line-soft)}
+  .tags .mark{
+    font-size:15px;
+    line-height:1;
+    flex:none;
+  }
+  .cta{
+    margin-top:22px;
+    width:100%;
+    border:0;
+    background:var(--ink);
+    color:#FFFDF7;
+    font-family:var(--font-body);
+    font-size:17px;
+    font-weight:700;
+    letter-spacing:2px;
+    height:56px;
+    border-radius:3px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    transition:background .18s ease,transform .18s ease;
+  }
+  .cta:hover{background:#000}
+  .cta:active{transform:translateY(1px)}
+  .intro-foot{
+    margin:14px 0 0;
+    text-align:center;
+    font-size:11px;
+    letter-spacing:.4px;
+    color:var(--muted);
+  }
+
+  /* ===== 视图：答题 ===== */
+  .q-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+  .q-count{font-size:13px;font-weight:700;letter-spacing:1px}
+  .q-left{font-size:11px;color:var(--muted);letter-spacing:1px}
+  .route{display:grid;grid-template-columns:repeat(32,1fr);gap:3px;margin:12px 0 0}
+  .route i{display:block;height:9px;background:var(--line-soft);border-radius:1px}
+  .route i.done{background:var(--ink)}
+  .route i.now{background:var(--ink);opacity:.55}
+  .q-body{flex:1;display:flex;flex-direction:column;justify-content:flex-start;padding:24px 0 4px}
+  .q-text{
+    margin:0 0 6px;
+    font-size:clamp(20px,5.6vw,23px);
+    line-height:1.55;
+    font-weight:700;
+    letter-spacing:.2px;
+    min-height:3.1em;
+  }
+  .q-hint{font-size:11px;color:var(--muted);margin:0 0 18px;letter-spacing:.6px}
+  .opts{display:flex;flex-direction:column;gap:10px;margin:0}
+  .opt{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    width:100%;
+    text-align:left;
+    font-family:var(--font-body);
+    font-size:15px;
+    line-height:1.6;
+    color:var(--ink);
+    background:rgba(249,246,236,.88);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:15px 14px;
+    cursor:pointer;
+    transition:background .16s ease,color .16s ease,border-color .16s ease,transform .16s ease;
+  }
+  .opt:hover{background:#F1EDDF;border-color:#BFB9A9}
+  .opt:active{transform:translateY(1px)}
+  .opt .bdg{
+    flex:none;
+    width:22px;height:22px;
+    border:1px solid var(--ink);
+    border-radius:50%;
+    font-size:11px;
+    font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+    margin-top:1px;
+    transition:background .16s ease,color .16s ease,border-color .16s ease;
+  }
+  .opt.chosen{background:var(--ink);border-color:var(--ink);color:#FFFDF7}
+  .opt.chosen .bdg{background:#FFFDF7;color:var(--ink);border-color:#FFFDF7}
+  .q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:20px;padding-top:13px;border-top:1px solid var(--line-soft)}
+  .ghost{
+    border:0;background:none;font-family:var(--font-body);font-size:12px;
+    color:#615E55;letter-spacing:1px;cursor:pointer;padding:6px 0;
+  }
+  .ghost:hover{color:var(--ink)}
+  .ghost[disabled]{opacity:.35;cursor:default}
+
+  /* ===== 视图：结果 ===== */
+  .res-eyebrow{font-size:11px;letter-spacing:3px;color:var(--muted);margin:0}
+  .plate{margin-top:12px;display:flex;align-items:stretch;gap:0}
+  .plate-bar{width:10px;border-radius:2px;flex:none}
+  .plate-body{padding-left:16px;min-width:0}
+  .plate-name{
+    font-size:clamp(34px,10vw,42px);
+    font-weight:900;
+    line-height:1.1;
+    letter-spacing:2px;
+    margin:0;
+  }
+  .plate-pin{margin:8px 0 0;font-size:11px;letter-spacing:3px;color:var(--muted);font-weight:500}
+  .hit-line{margin:18px 0 0;font-size:14px;line-height:1.7;color:var(--ink-soft)}
+  .hit-line strong{font-size:17px;font-weight:900;margin:0 2px}
+  .persona{
+    margin:14px 0 0;
+    font-family:var(--font-display);
+    font-size:20px;
+    line-height:1.5;
+    letter-spacing:.4px;
+  }
+  .sec-label{
+    font-size:11px;letter-spacing:2.5px;color:var(--muted);
+    margin:26px 0 10px;display:flex;align-items:center;gap:8px;
+  }
+  .sec-label::after{content:'';flex:1;height:1px;background:var(--line-soft)}
+  .bars{display:flex;flex-direction:column;gap:9px}
+  .bar-row{display:grid;grid-template-columns:44px 1fr 30px;align-items:center;gap:10px}
+  .bar-name{font-size:13px;font-weight:700;letter-spacing:1px}
+  .bar-track{display:block;height:8px;background:#E6E0CF;border-radius:1px;overflow:hidden}
+  .bar-fill{display:block;height:100%;border-radius:1px;transition:width .55s cubic-bezier(.2,.7,.3,1)}
+  .bar-num{font-size:12px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+  .dna{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+  .dna span{
+    font-size:12px;letter-spacing:1px;padding:6px 10px;
+    border:1px solid var(--line);border-radius:2px;color:var(--ink-soft);
+  }
+  .desc{font-size:15px;line-height:1.95;color:var(--ink-soft);margin:0;text-align:justify}
+  .scene{
+    margin:18px 0 0;padding:16px 16px;
+    border-radius:3px;
+    font-size:14px;line-height:1.85;
+  }
+  .scene b{display:block;font-size:11px;letter-spacing:2px;font-weight:700;margin-bottom:6px;opacity:.75}
+  .note{font-size:12px;line-height:1.8;color:var(--muted);margin:14px 0 0;padding-left:12px;border-left:2px solid var(--line)}
+  .next-stop{
+    margin-top:12px;display:flex;align-items:center;gap:12px;
+    padding:14px 14px;background:rgba(245,242,232,.62);border:1px solid var(--line-soft);border-radius:3px;
+  }
+  .next-stop .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .next-stop .nn{display:block;font-size:15px;font-weight:700;letter-spacing:1px}
+  .next-stop .np{display:block;font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5}
+  .res-actions{display:flex;flex-direction:column;gap:10px;margin-top:26px}
+  .btn-primary{
+    border:0;background:var(--ink);color:#FFFDF7;font-family:var(--font-body);
+    font-size:15px;font-weight:700;letter-spacing:2px;height:52px;border-radius:3px;cursor:pointer;
+  }
+  .btn-primary:hover{background:#000}
+  .btn-line{
+    border:1px solid var(--ink);background:transparent;color:var(--ink);font-family:var(--font-body);
+    font-size:14px;font-weight:500;letter-spacing:2px;height:48px;border-radius:3px;cursor:pointer;
+  }
+  .btn-line:hover{background:var(--ink);color:#FFFDF7}
+  .copy-tip{font-size:11px;color:var(--muted);text-align:center;margin:2px 0 0;height:14px}
+
+  /* ===== 视图：城市图鉴 ===== */
+  .gal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+  .gal-title{font-family:var(--font-display);font-size:22px;margin:0;letter-spacing:1px}
+  .gal-sub{font-size:12px;color:var(--muted);margin:8px 0 18px;line-height:1.7}
+  .gal-list{display:flex;flex-direction:column;gap:12px}
+  .gal-card{border:1px solid var(--line-soft);border-radius:3px;padding:14px 14px 14px 16px;position:relative;background:rgba(253,251,244,.60)}
+  .gal-card::before{content:'';position:absolute;left:0;top:12px;bottom:12px;width:4px;border-radius:2px;background:var(--c)}
+  .gal-card h3{margin:0;font-size:16px;font-weight:900;letter-spacing:2px}
+  .gal-card .gp{font-size:12px;color:var(--muted);margin:5px 0 0;line-height:1.7}
+  .gal-card .gt{font-size:13px;color:var(--ink-soft);margin:7px 0 0;line-height:1.7}
+  .gal-foot{margin:20px 0 0}
+  @media(prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ===== 视图：首页 ===== -->
+  <section class="view active" id="view-intro">
+    <div class="intro-top">
+      <h1 class="intro-title">测一测，<br>你适合定居的城市</h1>
+      <p class="intro-sub">凭你的脑洞偏好，匹配和你同频的城市</p>
+      <div class="intro-rule"></div>
+    </div>
+    <ul class="tags">
+      <li><span class="mark">✅</span><span>生活节奏 ｜ 快慢随你心意</span></li>
+      <li><span class="mark">✅</span><span>吃喝口味 ｜ 适配你的味蕾</span></li>
+      <li><span class="mark">✅</span><span>日常状态 ｜ 匹配你的精神状态</span></li>
+      <li><span class="mark">✅</span><span>城市气质 ｜ 找到你的本命城市</span></li>
+    </ul>
+    <div class="route-art" aria-hidden="true">
+      <svg viewBox="0 0 400 150" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none" stroke="#16181C" stroke-linecap="round" stroke-opacity=".22">
+          <path d="M16 104 H384" stroke-width="2"/>
+          <path d="M108 22 H196 L238 60" stroke-width="1.4"/>
+          <path d="M286 140 L322 100" stroke-width="1.4"/>
+          <path d="M376 34 V70" stroke-width="1.4"/>
+        </g>
+        <g stroke-linejoin="round"><circle cx="36" cy="104" r="5" fill="#FAF7EE" stroke="#C4323C" stroke-width="2.2"/><circle cx="68" cy="104" r="5" fill="#FAF7EE" stroke="#2A4E8F" stroke-width="2.2"/><circle cx="104" cy="104" r="5" fill="#FAF7EE" stroke="#1F8E8A" stroke-width="2.2"/><circle cx="136" cy="104" r="5" fill="#FAF7EE" stroke="#DE5A26" stroke-width="2.2"/><circle cx="172" cy="104" r="5" fill="#FAF7EE" stroke="#4C8C2B" stroke-width="2.2"/><circle cx="208" cy="104" r="5" fill="#FAF7EE" stroke="#7A5AA6" stroke-width="2.2"/><circle cx="240" cy="104" r="5" fill="#FAF7EE" stroke="#C22E76" stroke-width="2.2"/><circle cx="276" cy="104" r="5" fill="#FAF7EE" stroke="#E0A800" stroke-width="2.2"/><circle cx="308" cy="104" r="5" fill="#FAF7EE" stroke="#6C8A7A" stroke-width="2.2"/><circle cx="344" cy="104" r="5" fill="#FAF7EE" stroke="#A3A63B" stroke-width="2.2"/></g>
+      </svg>
+    </div>
+    <button class="cta" id="btn-start">点击测试 <span aria-hidden="true">→</span></button>
+    <p class="intro-foot">趣味测试仅供娱乐，找到你的本命城市 cp</p>
+  </section>
+
+  <!-- ===== 视图：答题 ===== -->
+  <section class="view" id="view-quiz">
+    <div class="q-head">
+      <span class="q-count" id="q-count">第 01 站</span>
+      <span class="q-left" id="q-left">还剩 32 站</span>
+    </div>
+    <div class="route" id="route" aria-hidden="true"></div>
+    <div class="q-body">
+      <p class="q-text" id="q-text"></p>
+      <p class="q-hint">选一个最像你的，凭第一反应</p>
+      <div class="opts" id="opts"></div>
+      <div class="q-nav">
+        <button class="ghost" id="btn-back">← 上一站</button>
+        <span class="q-left" id="q-progress">0 / 32</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 视图：结果 ===== -->
+  <section class="view" id="view-result">
+    <p class="res-eyebrow">终 点 站</p>
+    <div class="plate">
+      <div class="plate-bar" id="res-bar"></div>
+      <div class="plate-body">
+        <h2 class="plate-name" id="res-name"></h2>
+        <p class="plate-pin" id="res-pin"></p>
+      </div>
+    </div>
+    <p class="hit-line" id="res-hit"></p>
+    <p class="persona" id="res-persona"></p>
+
+    <p class="sec-label">你的一拍即合</p>
+    <div class="bars" id="res-bars"></div>
+
+    <p class="sec-label">你的人设 DNA</p>
+    <div class="dna" id="res-dna"></div>
+
+    <p class="sec-label">为什么是你</p>
+    <p class="desc" id="res-desc"></p>
+
+    <div class="scene" id="res-scene"><b>你在这儿的一天大概是这样</b><span id="res-scene-text"></span></div>
+    <p class="note" id="res-note"></p>
+
+    <p class="sec-label">下一站 · 你的 B 计划</p>
+    <div class="next-stop" id="res-next"></div>
+
+    <div class="res-actions">
+      <button class="btn-primary" id="btn-copy">复制我的结果</button>
+      <button class="btn-line" id="btn-again">重新测一次</button>
+      <button class="ghost" id="btn-gallery" style="text-align:center">看看 10 座城市的人设图鉴 →</button>
+      <p class="copy-tip" id="copy-tip"></p>
+    </div>
+  </section>
+
+  <!-- ===== 视图：城市图鉴 ===== -->
+  <section class="view" id="view-gallery">
+    <div class="gal-head">
+      <h2 class="gal-title">10 城人设图鉴</h2>
+      <button class="ghost" id="btn-gal-back">← 返回结果</button>
+    </div>
+    <p class="gal-sub">每个城市都有自己的脾气，没有排名，只有合不合拍。</p>
+    <div class="gal-list" id="gal-list"></div>
+    <div class="gal-foot">
+      <button class="btn-line" id="btn-gal-again" style="width:100%">重新测一次</button>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* ===== 城市人设 ===== */
+const CITIES = {
+  bj:{name:'北京',pin:'BEIJING',c:'#C4323C',
+    persona:'脑内常驻规划局',
+    tagline:'你连点外卖都会顺便想一下这座城市该怎么发展',
+    dna:['格局先行','抬头看天','硬核续航'],
+    desc:'你天生对「大」有反应：大话题、大格局、大到看不见边的东西。别人聊天聊天气，你能从天气聊到城市治理。你的日常偏硬核，通勤一小时起步，但你在这段时间里能看完半本书，还能顺手把下周的会排好。',
+    scene:'上午在胡同里找一家能坐一下午的书店，下午和刚认识的人聊三小时行业趋势，晚上回家才发现自己没吃晚饭。',
+    note:'记得给自己留一条近路，不用把每件事都做成战略。'},
+  sh:{name:'上海',pin:'SHANGHAI',c:'#2A4E8F',
+    persona:'生活仪式感首席运营官',
+    tagline:'你的生活里没有「随便」，只有「这版还不够精致」',
+    dna:['细节控','秩序感','审美在线'],
+    desc:'你能把一杯咖啡、一次下班、一顿早饭都运营成一场小型仪式。你对细节的敏感是天赋：光线、动线、杯子的把手朝哪边，你都看得见。你排队两小时不是为了吃，是为了确认它值得。',
+    scene:'周末早上先做一杯咖啡，摆好位置拍一张，然后才开始喝——顺序不能乱，乱了这杯就不算数。',
+    note:'偶尔允许自己「随便一次」，世界不会塌。'},
+  tj:{name:'天津',pin:'TIANJIN',c:'#1F8E8A',
+    persona:'自带相声频道的松弛选手',
+    tagline:'你的嘴，是这桌人的公共娱乐设施',
+    dna:['天生段子手','情绪稳定','唠嗑天赋'],
+    desc:'你走到哪儿气氛就活到哪儿。别人紧张，你先抛个段子；别人吵架，你吵着吵着把双方都逗笑。你的快乐成本很低：一个煎饼、一句自嘲、跟大爷唠两句，一天就顺了。',
+    scene:'你在楼下买煎饼，五分钟认识了摊主一家，还顺便知道了隔壁小区的最新八卦。',
+    note:'冷场的时候不必总是你救场，你也可以安静一会儿。'},
+  cq:{name:'重庆',pin:'CHONGQING',c:'#DE5A26',
+    persona:'不怕爬坡的立体地形选手',
+    tagline:'导航失灵？没关系，你能靠腿爬出正确答案',
+    dna:['硬核耐操','热辣直给','立体空间感'],
+    desc:'你的耐受度惊人：辣要最辣，坡要最陡，路要最绕。你身上有一股「这有啥」的狠劲——别人喊累，你已经到顶了。你的热情也是重口的，喜欢就是喜欢，不藏着不绕弯。',
+    scene:'你下楼吃个火锅，回来发现自己站在另一栋楼的八楼，但你一点都不慌。',
+    note:'偶尔也坐趟电梯，不用每一段路都自己爬。'},
+  gz:{name:'广州',pin:'GUANGZHOU',c:'#4C8C2B',
+    persona:'早茶桌上的务实派',
+    tagline:'你谈钱不尴尬，谈吃更不尴尬',
+    dna:['务实清醒','吃货本体','不装自在'],
+    desc:'你有一套很稳的生活算法：性价比、实用、别装。你最舒服的场合是一张圆桌、一壶茶、几笼点心，边吃边把事谈完。你对「体面」的定义很松：穿拖鞋也自在，账单算得清才安心。',
+    scene:'你的社交货币是「哪家好吃又不贵」，你的群聊一半内容在约饭，另一半在比价。',
+    note:'偶尔为「没用但好看」的东西花一次钱，也不亏。'},
+  cd:{name:'成都',pin:'CHENGDU',c:'#7A5AA6',
+    persona:'把时间泡在盖碗茶里的佛系选手',
+    tagline:'你不是懒，你是真的懂什么叫「不着急」',
+    dna:['佛系松弛','晒太阳专家','情绪降温器'],
+    desc:'你的核心竞争力是松弛。别人加班到崩溃，你在想下午太阳会不会出来。你不是不努力，你只是知道努力之外还得留出晒太阳的时间。你的快乐密度很高，成本很低。',
+    scene:'下午三点，你把椅子搬到太阳底下，一杯茶，什么都不干，就觉得今天已经赢了。',
+    note:'松弛是本事，别让它变成拖延的借口。'},
+  cs:{name:'长沙',pin:'CHANGSHA',c:'#C22E76',
+    persona:'夜间模式常驻用户',
+    tagline:'你的生物钟里，晚上八点才叫早上',
+    dna:['夜行动物','热闹充电','辣味加成'],
+    desc:'你属于「热闹」这一挂：人多的地方你才来电。你的夜生活不需要计划，出门就是。你嗓门大、情绪足、笑点低，朋友聚会少了你就差点意思。',
+    scene:'凌晨一点你还在街边嗦粉，隔壁桌的人已经跟你聊成了朋友，还约了明天继续。',
+    note:'白天也试着开一次机，你会发现上午的光也挺好看。'},
+  sz:{name:'深圳',pin:'SHENZHEN',c:'#E0A800',
+    persona:'边跑步边想 KPI 的永动机',
+    tagline:'你的松弛感，是「跑完这五公里再说」',
+    dna:['效率至上','目标感强','说干就干'],
+    desc:'你的默认状态是「在线」。你年轻、直接、目标感强，能在海边跑步的同时把下周的计划排完。你把「搞钱」说得很坦荡，因为你知道那是自由的门票。',
+    scene:'你的周末是：早上跑步、中午改方案、傍晚看海，一天当三天用，还觉得自己挺放松。',
+    note:'记得留一段没有目标的时间，那也是你的资产。'},
+  hz:{name:'杭州',pin:'HANGZHOU',c:'#6C8A7A',
+    persona:'在代码和山水之间反复横跳',
+    tagline:'你既要交付，也要看山看水看桂花',
+    dna:['审美执念','双面生活','慢里带卷'],
+    desc:'你身上有两种气质在打架：一种是「这个版本必须上线」，另一种是「今天天气这么好不出去太浪费」。最后你两个都干了：白天写方案，傍晚骑车去湖边。你的审美和执行力一样在线。',
+    scene:'你骑车绕湖一圈，耳机里放着歌，脑子里在改需求文档，还顺手拍了三张很好看的照片。',
+    note:'两种气质不用和解，它们本来就是你。'},
+  dl:{name:'大理',pin:'DALI',c:'#A3A63B',
+    persona:'精神裸辞代言人',
+    tagline:'你的理想生活是：天很大，人很少，事很慢',
+    dna:['反内卷','放空大师','天空收集癖'],
+    desc:'你天生对「卷」过敏。你不需要热闹来证明什么，一片天、一把椅子、一个下午就够。你不是在逃避，你只是早早想明白了：日子是给自己过的。',
+    scene:'你在院子里坐着，什么都没干，天从蓝变成粉，你觉得这一天很值。',
+    note:'放空很好，但记得给自己留一点能落地的事。'}
+};
+
+/* ===== 32 道题（每题的 4 个选项按城市池均匀配比，10 城各 12–13 题） ===== */
+const QUESTIONS = [
+ {q:'闹钟响到第三遍，你的真实操作是？',o:[
+   ['一睁眼就开始在脑子里排今天最重要的三件事','bj'],
+   ['先把窗帘拉开一条缝，看看今天的光线配不配','sh'],
+   ['再躺两分钟就起，这两分钟是一天里最值钱的','tj'],
+   ['闭着眼算今天还要爬几段坡，算完就起','cq'],
+ ]},
+ {q:'深夜十一点，肚子突然叫了一声',o:[
+   ['翻冰箱看看有没有剩的，能凑一顿是一顿','gz'],
+   ['饿着也能睡，明天早上再说','cd'],
+   ['穿鞋下楼，这条街现在才刚开始热闹','cs'],
+   ['点个高蛋白的，顺便把明天的闹钟定好','sz'],
+ ]},
+ {q:'周末醒来，发现今天天气巨好',o:[
+   ['骑车出去转一圈，顺便看看桂花开了没','hz'],
+   ['把椅子搬到太阳底下，一坐就是一上午','dl'],
+   ['打开手机，看看今天有什么值得聊的大事','bj'],
+   ['先做杯咖啡，摆好位置拍一张才开始喝','sh'],
+ ]},
+ {q:'群里有人发了句「在吗」，然后没下文',o:[
+   ['先回个表情包探探路，看他到底想干嘛','tj'],
+   ['直接回：有事说事，我这人怕绕','cq'],
+   ['先琢磨一下，是不是又要拉我合伙','gz'],
+   ['装没看见，等他自己说清楚','cd'],
+ ]},
+ {q:'洗衣机提示「请取出衣物」，已经一天了',o:[
+   ['先放着，等我晚上回来再说','cs'],
+   ['立刻去取、晾上，顺手把明天的也配好','sz'],
+   ['取出来顺手拍一张，晾衣服也要好看','hz'],
+   ['再放一天，衣服又不会长脚','dl'],
+ ]},
+ {q:'地铁上有人开着外放刷短视频',o:[
+   ['心里已经开始写一篇关于公共秩序的长文','bj'],
+   ['换个车厢，站直一点，离远一点','sh'],
+   ['凑过去一起看，还能点评两句','tj'],
+   ['直接说：哥，声音能小点不','cq'],
+ ]},
+ {q:'外卖比预计晚了二十分钟',o:[
+   ['先看有没有超时赔付，能领就领','gz'],
+   ['不催了，反正我也不着急吃','cd'],
+   ['打电话问一句：还有多久，我等着','cs'],
+   ['一边催一边把下一单也下好','sz'],
+ ]},
+ {q:'理发师问「剪短一点行吗」',o:[
+   ['掏出图跟他讲：我要的是这种感觉','hz'],
+   ['都行，你看着来，我不想做决定','dl'],
+   ['从工作讲到审美，把我的想法讲清楚','bj'],
+   ['反复确认三遍，剪完还要照后脑勺','sh'],
+ ]},
+ {q:'朋友发来一张精心修过的自拍',o:[
+   ['立刻夸，而且夸得具体一点','tj'],
+   ['好看，但我想看原图','cq'],
+   ['先问：这顿多少钱','gz'],
+   ['点个赞，然后继续躺着','cd'],
+ ]},
+ {q:'健身卡办到第三个月，你去了',o:[
+   ['两次，都是晚上去的','cs'],
+   ['二十次，还做了记录','sz'],
+   ['五次，每次都要拍一张','hz'],
+   ['一次，主要是去洗澡','dl'],
+ ]},
+ {q:'老板发来「有空吗」三个字',o:[
+   ['心里过一遍最近所有的事，猜他要聊什么','bj'],
+   ['先把手上整理干净，再回：现在可以','sh'],
+   ['回：有空，就是有点虚','tj'],
+   ['直接回：说，什么事','cq'],
+ ]},
+ {q:'冰箱里只剩两个鸡蛋',o:[
+   ['煎一个，另一个留着明天','gz'],
+   ['煮了，配点酱油，一顿就这样','cd'],
+   ['煎了，再下碗粉','cs'],
+   ['水煮，算好蛋白质，再配点菜','sz'],
+ ]},
+ {q:'下雨了，你忘带伞',o:[
+   ['站在屋檐下等一会儿，顺便看看雨','hz'],
+   ['干脆淋回去，反正也不远','dl'],
+   ['查一下天气，判断这雨要下多久','bj'],
+   ['打车，宁可花钱也不湿鞋','sh'],
+ ]},
+ {q:'亲戚问你「一个月挣多少」',o:[
+   ['先自嘲：挣得不多，但活得挺开心','tj'],
+   ['直接报个数，然后反问他们','cq'],
+   ['含糊一句，然后把话题转到吃饭','gz'],
+   ['笑笑说还行，然后去阳台晒太阳','cd'],
+ ]},
+ {q:'打车时发现司机绕路了',o:[
+   ['直接说：师傅，这条路好像远一点','cs'],
+   ['打开导航，算一下差多少钱','sz'],
+   ['算了，看看窗外风景也挺好','hz'],
+   ['不说了，反正最后也会到','dl'],
+ ]},
+ {q:'朋友约你出门，你已经躺下了',o:[
+   ['爬起来，顺便把见面要聊的事想好','bj'],
+   ['换身衣服再出门，不能狼狈地见人','sh'],
+   ['嘴上说来了来了，其实还在床上','tj'],
+   ['直接说：我到了，你们下来','cq'],
+ ]},
+ {q:'群里开始发红包',o:[
+   ['先抢，抢完再看是谁发的','gz'],
+   ['懒得点，等它过期','cd'],
+   ['抢完发一句：再来一个','cs'],
+   ['抢了，顺便把群里的消息都看完','sz'],
+ ]},
+ {q:'一个人去看电影',o:[
+   ['挑个画面好看的，坐最后一排','hz'],
+   ['随便买一张，进去睡一会儿','dl'],
+   ['挑部有讨论价值的，看完还想找人聊','bj'],
+   ['爆米花饮料都要，位置选中偏后','sh'],
+ ]},
+ {q:'有人对你说「你最近好像胖了」',o:[
+   ['立刻自嘲：是啊，主要是幸福','tj'],
+   ['胖点怎么了，能吃是福','cq'],
+   ['心里算：是不是外卖点多了','gz'],
+   ['不管，反正我舒服','cd'],
+ ]},
+ {q:'开会时突然被点名发言',o:[
+   ['先咳一声，把气场拉起来再讲','cs'],
+   ['打开准备好的文档，直接讲结论','sz'],
+   ['先讲框架再讲细节，语速放慢','hz'],
+   ['我没什么补充的，大家说得都挺好','dl'],
+ ]},
+ {q:'深夜刷到前任的动态',o:[
+   ['分析一下他现在过得怎么样','bj'],
+   ['看看照片，评一下构图和穿搭','sh'],
+   ['笑一下，截图发给朋友当段子','tj'],
+   ['直接划走，明天还要早起','cq'],
+ ]},
+ {q:'朋友说「随便点，我都可以」',o:[
+   ['那就按性价比点，人均先控住','gz'],
+   ['那我也不点了，一起等别人点','cd'],
+   ['点辣的，越多越好','cs'],
+   ['按人数和热量配一桌，荤素都要','sz'],
+ ]},
+ {q:'空调遥控器找不到了',o:[
+   ['先把屋子收拾一遍，顺便找','hz'],
+   ['算了，热就热吧，忍一忍','dl'],
+   ['逐个房间排查，逻辑很清楚','bj'],
+   ['打给物业，让他们上来看看','sh'],
+ ]},
+ {q:'朋友说「就改一下下，很快的」',o:[
+   ['嘴上答应，心里已经在准备段子','tj'],
+   ['行，但只改一次','cq'],
+   ['先问清楚工作量，再决定帮不帮','gz'],
+   ['说好，然后拖到明天再说','cd'],
+ ]},
+ {q:'晚上十点，又饿又懒得出门',o:[
+   ['点外卖，反正这个点才刚开始','cs'],
+   ['冲杯蛋白粉，凑合一顿','sz'],
+   ['煮碗面，摆盘一下再拍张照','hz'],
+   ['喝水，然后睡','dl'],
+ ]},
+ {q:'公司组织团建去爬山',o:[
+   ['挺好，正好看看风景想点事','bj'],
+   ['先看要穿什么，装备得配齐','sh'],
+   ['一路讲段子，把累先忘掉','tj'],
+   ['爬就爬，谁先喊累谁请客','cq'],
+ ]},
+ {q:'工资到账那天',o:[
+   ['先把该存的存起来，剩下的慢慢花','gz'],
+   ['转一部分，然后该吃吃该睡睡','cd'],
+   ['先约一顿，庆祝一下','cs'],
+   ['记账，看看这个月还能再省点','sz'],
+ ]},
+ {q:'半夜窗外有只猫一直叫',o:[
+   ['开窗看看，顺便拍两张','hz'],
+   ['戴上耳塞，继续睡','dl'],
+   ['起来研究一下它为什么叫','bj'],
+   ['关窗开白噪音，保护睡眠质量','sh'],
+ ]},
+ {q:'同事在群里@你，但你已经下班了',o:[
+   ['回个表情包，先把气氛稳住','tj'],
+   ['直接说：明天上班说','cq'],
+   ['看一眼是不是急事，不急就明天','gz'],
+   ['明天再说，今天先休息','cd'],
+ ]},
+ {q:'朋友发来「转发这条锦鲤」',o:[
+   ['转了，还配一句更吉利的','cs'],
+   ['转了，反正不花钱','sz'],
+   ['转了，但把图换成好看的','hz'],
+   ['没转，我运气够用了','dl'],
+ ]},
+ {q:'春节回家，亲戚让你表演节目',o:[
+   ['站起来讲两句，把气氛撑住','bj'],
+   ['先推辞两句，然后体面地来一个','sh'],
+   ['直接上台讲段子，全场都是我的人','tj'],
+   ['唱一首，声音大，气势足','cq'],
+ ]},
+ {q:'如果给生活开个倍速，你选',o:[
+   ['不用，能省钱的速度刚刚好','gz'],
+   ['零点七五倍，慢一点才看得清','cd'],
+   ['晚上两倍，白天零点五倍','cs'],
+   ['一点五倍，正好还能再塞两件事','sz'],
+ ]},
+];
+
+/* ===== 状态 ===== */
+const state = {answers:[], order:[]};
+const $ = id => document.getElementById(id);
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function showView(name){
+  ['intro','quiz','result','gallery'].forEach(v=>{
+    $('view-'+v).classList.toggle('active', v===name);
+  });
+  window.scrollTo(0,0);
+}
+
+function startQuiz(){
+  state.answers = [];
+  state.order = QUESTIONS.map(q => shuffle(q.o.map(([t,c],i)=>({t,c,i}))));
+  renderQuestion();
+  showView('quiz');
+}
+
+function renderRoute(){
+  const done = state.answers.length;
+  let html = '';
+  for(let i=0;i<32;i++){
+    const cls = i<done ? 'done' : (i===done && done<32 ? 'now' : '');
+    html += '<i class="'+cls+'"></i>';
+  }
+  $('route').innerHTML = html;
+  $('q-progress').textContent = done + ' / 32';
+}
+
+function renderQuestion(){
+  const idx = state.answers.length;
+  const total = QUESTIONS.length;
+  $('q-count').textContent = '第 ' + String(idx+1).padStart(2,'0') + ' 站';
+  $('q-left').textContent = '还剩 ' + (total-idx) + ' 站';
+  renderRoute();
+
+  const q = QUESTIONS[idx];
+  $('q-text').textContent = q.q;
+  const box = $('opts');
+  box.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  state.order[idx].forEach((opt,i)=>{
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'opt';
+    btn.innerHTML = '<span class="bdg">'+letters[i]+'</span><span>'+opt.t+'</span>';
+    btn.addEventListener('click', ()=>choose(btn, opt.c));
+    box.appendChild(btn);
+  });
+  $('btn-back').disabled = idx === 0;
+}
+
+let locked = false;
+function choose(el, city){
+  if(locked) return;
+  locked = true;
+  el.classList.add('chosen');
+  state.answers.push(city);
+  setTimeout(()=>{
+    locked = false;
+    if(state.answers.length >= QUESTIONS.length){
+      renderResult();
+      showView('result');
+    } else {
+      renderQuestion();
+    }
+  }, 250);
+}
+
+function goBack(){
+  if(locked || state.answers.length===0) return;
+  state.answers.pop();
+  renderQuestion();
+}
+
+/* ===== 结果计算（平分时按最近一次选中的城市优先） ===== */
+function tally(){
+  const scores = {};
+  Object.keys(CITIES).forEach(k=>scores[k]=0);
+  state.answers.forEach(c=>scores[c]++);
+  const last = {};
+  state.answers.forEach((c,i)=>last[c]=i);
+  return Object.keys(CITIES)
+    .map(k=>({k, v:scores[k], last:last[k]!==undefined?last[k]:-1}))
+    .sort((a,b)=> b.v-a.v || b.last-a.last);
+}
+
+function renderResult(){
+  const ranked = tally();
+  const top = ranked[0];
+  const city = CITIES[top.k];
+  const second = ranked[1];
+  const totalPicks = state.answers.length;
+
+  $('res-bar').style.background = city.c;
+  $('res-name').textContent = city.name;
+  $('res-pin').textContent = city.pin + ' · 本 命 城 市';
+  $('res-hit').innerHTML = '32 站里，你和它有 <strong>'+top.v+'</strong> 次隔空击掌（共 '+totalPicks+' 次选择）';
+  $('res-persona').textContent = '「' + city.persona + '」';
+
+  const max = ranked[0].v || 1;
+  $('res-bars').innerHTML = ranked.slice(0,3).map(r=>{
+    const c = CITIES[r.k];
+    const w = Math.max(6, Math.round(r.v/max*100));
+    return '<div class="bar-row">'
+      + '<span class="bar-name" style="color:'+c.c+'">'+c.name+'</span>'
+      + '<span class="bar-track"><span class="bar-fill" style="width:'+w+'%;background:'+c.c+'"></span></span>'
+      + '<span class="bar-num">'+r.v+'</span>'
+      + '</div>';
+  }).join('');
+
+  $('res-dna').innerHTML = city.dna.map(d=>'<span>'+d+'</span>').join('');
+  $('res-desc').textContent = city.desc;
+  $('res-scene').style.background = hexA(city.c, .10);
+  $('res-scene-text').textContent = city.scene;
+  $('res-note').textContent = city.note;
+
+  const sc = CITIES[second.k];
+  $('res-next').innerHTML = '<span class="dot" style="background:'+sc.c+'"></span>'
+    + '<span><span class="nn">'+sc.name+' · '+sc.persona+'</span>'
+    + '<span class="np">'+sc.tagline+'</span></span>';
+
+  // 复制文案
+  shareText = '我的本命城市是【'+city.name+'】——'+city.persona
+    + '｜32 站里和它隔空击掌 '+top.v+' 次，B 计划是'+sc.name+'。你也测测看？';
+  $('copy-tip').textContent = '';
+}
+
+let shareText = '';
+function hexA(hex, a){
+  const h = hex.replace('#','');
+  const r = parseInt(h.substr(0,2),16), g = parseInt(h.substr(2,2),16), b = parseInt(h.substr(4,2),16);
+  return 'rgba('+r+','+g+','+b+','+a+')';
+}
+
+function copyResult(){
+  if(!shareText) return;
+  const done = ()=>{ $('copy-tip').textContent = '已复制，去小红书发一条吧'; };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(shareText).then(done).catch(fallbackCopy);
+  } else { fallbackCopy(); }
+  function fallbackCopy(){
+    const ta = document.createElement('textarea');
+    ta.value = shareText;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try{ document.execCommand('copy'); done(); }catch(e){ $('copy-tip').textContent = '复制失败，请长按选择文字'; }
+    document.body.removeChild(ta);
+  }
+}
+
+function renderGallery(){
+  $('gal-list').innerHTML = Object.keys(CITIES).map(k=>{
+    const c = CITIES[k];
+    return '<div class="gal-card" style="--c:'+c.c+'">'
+      + '<h3>'+c.name+'</h3>'
+      + '<p class="gp">'+c.persona+'</p>'
+      + '<p class="gt">'+c.tagline+'</p>'
+      + '</div>';
+  }).join('');
+  showView('gallery');
+}
+
+/* ===== 绑定 ===== */
+$('btn-start').addEventListener('click', startQuiz);
+$('btn-back').addEventListener('click', goBack);
+$('btn-copy').addEventListener('click', copyResult);
+$('btn-again').addEventListener('click', startQuiz);
+$('btn-gallery').addEventListener('click', renderGallery);
+$('btn-gal-back').addEventListener('click', ()=>showView('result'));
+$('btn-gal-again').addEventListener('click', startQuiz);
+
+document.addEventListener('keydown', e=>{
+  if(!$('view-quiz').classList.contains('active')) return;
+  const idx = ['1','2','3','4'].indexOf(e.key);
+  if(idx>-1){
+    const btns = $('opts').querySelectorAll('.opt');
+    if(btns[idx]) btns[idx].click();
+  }
+  if(e.key === 'Backspace'){ e.preventDefault(); goBack(); }
+});
+</script>
+
+<script>
+/* 清除发布容器注入的右下角水印 */
+(function(){
+  var SEL='[data-custom-element="doubao-watermark"]';
+  function kill(){
+    var list=document.querySelectorAll(SEL);
+    for(var i=0;i<list.length;i++){
+      var n=list[i];
+      if(n && n.parentNode) n.parentNode.removeChild(n);
+    }
+  }
+  kill();
+  try{
+    var mo=new MutationObserver(function(muts){
+      for(var i=0;i<muts.length;i++){
+        if(muts[i].addedNodes && muts[i].addedNodes.length){ kill(); break; }
+      }
+    });
+    mo.observe(document.documentElement,{childList:true,subtree:true});
+  }catch(e){}
+  var n=0;
+  var t=setInterval(function(){ kill(); if(++n>40) clearInterval(t); },500);
+})();
+</script>
+</body>
+</html>
